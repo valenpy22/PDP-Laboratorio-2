@@ -1,45 +1,39 @@
-/*
-X: Posición en x, entero.
-Y: Posición en y, entero.
-BIT: Valor del bit, entero 0 <= BIT <= 1.
-D: Valor de la profundidad, entero.
-*/
-
-%CONSTRUCTORES
 pixbit(X, Y, BIT, D, [X, Y, BIT, D]).
 
 pixrgb(X, Y, R, G, B, D, [X, Y, R, G, B, D]).
 
 pixhex(X, Y, HEX, D, [X, Y, HEX, D]).
 
-image(W, H, [C|T], [W, H, [C|T]]) :-
+image(W, H, [C|T], [W, H, Pixeles2]) :-
     number(W),
-    number(H).
+    number(H),
+    ordenarPixelesX([C|T], Pixeles),
+    ordenarPixelesY(Pixeles, Pixeles2).
 
 %SELECTORES
-x([X|Resto], X).
+x([X|_], X).
 
-y([_, Y|Resto], Y).
+y([_, Y|_], Y).
 
-bit([_, _, BIT|Resto], BIT).
+bit([_, _, BIT|_], BIT).
 
-r([_, _, R|Resto], R).
+r([_, _, R|_], R).
 
-g([_, _, _, G|Resto], G).
+g([_, _, _, G|_], G).
 
-b([_, _, _, _, B|Resto], B).
+b([_, _, _, _, B|_], B).
 
-hex([_, _, Hex|Resto], Hex).
+hex([_, _, Hex|_], Hex).
 
-d([_, _, _, D|Resto], D).
+d([_, _, _, D|_], D).
 
-d_rgb([_, _, _, _, _, D|Resto], D).
+d_rgb([_, _, _, _, _, D|_], D).
 
-pixeles([W, H, Cabeza|Cola], Cabeza).
+pixeles([_, _, Cabeza|_], Cabeza).
 
-p1([Cabeza|Cola], Cabeza).
-p2([Cabeza, Cabeza2|Cola], Cabeza2).
-p3([Cabeza, Cabeza2, Cabeza3|Cola], Cabeza3).
+p1([Cabeza|_], Cabeza).
+p2([_, Cabeza2|_], Cabeza2).
+p3([_, _, Cabeza3|_], Cabeza3).
 
 w([W|_], W).
 
@@ -113,7 +107,7 @@ imageIsHexmap(Imagen) :-
     isPixhex(X, Y, HEX, D).
 
 size([], 0).
-size([X|Y], N) :-
+size([_|Y], N) :-
     size(Y, N1),
     N is N1 + 1.
 
@@ -124,9 +118,9 @@ imageIsCompressed(Imagen) :-
     size(Pixeles, N),
     N =\= W*H.
 
-append([], L2, L2).
-append([H|T], L2, [H|L3]) :-
-    append(T, L2, L3).
+my_append([], L2, L2).
+my_append([H|T], L2, [H|L3]) :-
+    my_append(T, L2, L3).
 
 %-----------------------------------------------------------
 cambiarXbit(Pixel, Largo, Pixelresultante) :-
@@ -137,11 +131,11 @@ cambiarXbit(Pixel, Largo, Pixelresultante) :-
     Xnew is Largo-X-1,
     pixbit(Xnew, Y, BIT, D, Pixelresultante).
 
-cambiarXbits([], Largo, []).
+cambiarXbits([], _, []).
 cambiarXbits([Primer|Pixeles], Largo, PixelesFinales) :-
     cambiarXbit(Primer, Largo, Pixel),
     cambiarXbits(Pixeles, Largo, Pixeles2),
-    append([Pixel], Pixeles2, PixelesFinales).
+    my_append([Pixel], Pixeles2, PixelesFinales).
 %-----------------------------------------------------------
 cambiarXpix(Pixel, Largo, Pixelresultante) :-
     x(Pixel, X),
@@ -153,11 +147,11 @@ cambiarXpix(Pixel, Largo, Pixelresultante) :-
     Xnew is Largo-X-1,
     pixrgb(Xnew, Y, R, G, B, D, Pixelresultante).
 
-cambiarXpixs([], Largo, []).
+cambiarXpixs([], _, []).
 cambiarXpixs([Primer|Pixeles], Largo, PixelesFinales) :-
     cambiarXpix(Primer, Largo, Pixel),
     cambiarXpixs(Pixeles, Largo, Pixeles2),
-    append([Pixel], Pixeles2, PixelesFinales).
+    my_append([Pixel], Pixeles2, PixelesFinales).
 %-----------------------------------------------------------
 cambiarXhex(Pixel, Largo, Pixelresultante) :-
     x(Pixel, X),
@@ -167,11 +161,11 @@ cambiarXhex(Pixel, Largo, Pixelresultante) :-
     Xnew is Largo-X-1,
     pixhex(Xnew, Y, HEX, D, Pixelresultante).
 
-cambiarXhexs([], Largo, []).
+cambiarXhexs([], _, []).
 cambiarXhexs([Primer|Pixeles], Largo, PixelesFinales) :-
     cambiarXhex(Primer, Largo, Pixel),
     cambiarXhexs(Pixeles, Largo, Pixeles2),
-    append([Pixel], Pixeles2, PixelesFinales).
+    my_append([Pixel], Pixeles2, PixelesFinales).
 %-----------------------------------------------------------
 %Por cada x cambiarlo a largo - x - 1
 imageFlipH(Imagen, I2) :-
@@ -199,11 +193,11 @@ cambiarYbit(Pixel, Largo, Pixelresultante) :-
     Ynew is Largo-Y-1,
     pixbit(X, Ynew, BIT, D, Pixelresultante).  
 
-cambiarYbits([], Largo, []).
+cambiarYbits([], _, []).
 cambiarYbits([Primer|Pixeles], Largo, PixelesFinales) :-
     cambiarYbit(Primer, Largo, Pixel),
     cambiarYbits(Pixeles, Largo, Pixeles2),
-    append([Pixel], Pixeles2, PixelesFinales).
+    my_append([Pixel], Pixeles2, PixelesFinales).
 %-----------------------------------------------------------
 cambiarYpix(Pixel, Largo, Pixelresultante) :-
     x(Pixel, X),
@@ -215,11 +209,11 @@ cambiarYpix(Pixel, Largo, Pixelresultante) :-
     Ynew is Largo-Y-1,
     pixrgb(X, Ynew, R, G, B, D, Pixelresultante).
 
-cambiarYpixs([], Largo, []).
+cambiarYpixs([], _, []).
 cambiarYpixs([Primer|Pixeles], Largo, PixelesFinales) :-
     cambiarYpix(Primer, Largo, Pixel),
     cambiarYpixs(Pixeles, Largo, Pixeles2),
-    append([Pixel], Pixeles2, PixelesFinales).
+    my_append([Pixel], Pixeles2, PixelesFinales).
 %-----------------------------------------------------------
 cambiarYhex(Pixel, Largo, Pixelresultante) :-
     x(Pixel, X),
@@ -229,11 +223,11 @@ cambiarYhex(Pixel, Largo, Pixelresultante) :-
     Ynew is Largo-Y-1,
     pixhex(X, Ynew, HEX, D, Pixelresultante).
 
-cambiarYhexs([], Largo, []).
+cambiarYhexs([], _, []).
 cambiarYhexs([Primer|Pixeles], Largo, PixelesFinales) :-
     cambiarYhex(Primer, Largo, Pixel),
     cambiarYhexs(Pixeles, Largo, Pixeles2),
-    append([Pixel], Pixeles2, PixelesFinales).
+    my_append([Pixel], Pixeles2, PixelesFinales).
 %-----------------------------------------------------------
 %Por cada x cambiarlo a largo - y - 1
 imageFlipV(Imagen, I2) :-
@@ -266,22 +260,20 @@ pixelApto(Pixel, X1, Y1, X2, Y2, P) :-
     pixbit(X, Y, BIT, D, P);
     P is -1.
 
-pixelesAptos([], X1, Y1, X2, Y2, []).
+pixelesAptos([], _, _, _, _, []).
 pixelesAptos([Primer|Resto], X1, Y1, X2, Y2, PixelesAptos) :-
     pixelApto(Primer, X1, Y1, X2, Y2, P),
     pixelesAptos(Resto, X1, Y1, X2, Y2, Pixeles2),
-    append([P], Pixeles2, PixelesAptos).
+    my_append([P], Pixeles2, PixelesAptos).
     
-eliminar([], Elemento, []).
+eliminar([], _, []).
 eliminar([E|L], E, L) :-
     !.
 eliminar([C|Q], E, L) :-
     eliminar(Q, E, N),
-    append([C], N, L).
+    my_append([C], N, L).
 
 imageCrop(Imagen, X1, Y1, X2, Y2, I2) :-
-    w(Imagen, W),
-    h(Imagen, H),
     pixeles(Imagen, Pixeles),
     pixelesAptos(Pixeles, X1, Y1, X2, Y2, PixelesAptos),
     eliminar(PixelesAptos, -1, PixelesAptosD),
@@ -379,7 +371,7 @@ pixelesrgbApixeleshex([], []).
 pixelesrgbApixeleshex([Primer|Resto], PixelesFinales) :-
     pixrgbApixhex(Primer, Pixhex),
     pixelesrgbApixeleshex(Resto, PixelesFinales2),
-    append([Pixhex], PixelesFinales2, PixelesFinales).
+    my_append([Pixhex], PixelesFinales2, PixelesFinales).
 
 imageRGBToHex(Imagen, I2) :-
     w(Imagen, W),
@@ -388,7 +380,7 @@ imageRGBToHex(Imagen, I2) :-
     pixelesrgbApixeleshex(Pixeles, P),
     image(W, H, P, I2).
 
-contarRepetidos([], Elemento, 0).
+contarRepetidos([], _, 0).
 contarRepetidos([C|Q], Elemento, Numero) :-
     C = Elemento,
     contarRepetidos(Q, Elemento, N1),
@@ -399,7 +391,7 @@ bits([], []).
 bits([C|Q], N) :-
     bit(C, BIT),
     bits(Q, N2),
-    append([BIT], N2, N).
+    my_append([BIT], N2, N).
 
 rgbs([], []).
 rgbs([C|Q], N) :-
@@ -407,24 +399,24 @@ rgbs([C|Q], N) :-
     g(C, G),
     b(C, B),
     rgbs(Q, N2),
-    append([[R, G, B]], N2, N).
+    my_append([[R, G, B]], N2, N).
 
 hexs([], []).
 hexs([C|Q], N) :-
     hex(C, HEX),
     hexs(Q, N2),
-    append([HEX], N2, N).
+    my_append([HEX], N2, N).
 
 histograma([], [], []).
 histograma([C|Q], [Repeticion|Repeticiones], Result) :-
     histograma(Q, Repeticiones, Result2),
-    append([[C, Repeticion]], Result2, Result).
+    my_append([[C, Repeticion]], Result2, Result).
 
-contarRepetidos2([C|Q], [], []).
+contarRepetidos2([_|_], [], []).
 contarRepetidos2([C|Q], [Elemento|Elementos], N) :-
     contarRepetidos([C|Q], Elemento, N1),
     contarRepetidos2([C|Q], Elementos, N2),
-    append([N1], N2, N).
+    my_append([N1], N2, N).
 
 eliminar_duplicados([], []).
 eliminar_duplicados([Head|Tail], Result) :-
@@ -474,11 +466,11 @@ rotateBit(Pixel, Altura, Pixelresultante) :-
 
     pixbit(Xnew, X, BIT, D, Pixelresultante).
 
-rotateBits([], Altura, []).
+rotateBits([], _, []).
 rotateBits([Primer|Pixeles], Altura, PixelesFinales) :-
     rotateBit(Primer, Altura, Pixel),
     rotateBits(Pixeles, Altura, Pixeles2),
-    append([Pixel], Pixeles2, PixelesFinales).
+    my_append([Pixel], Pixeles2, PixelesFinales).
 
 rotatePix(Pixel, Altura, Pixelresultante) :-
     x(Pixel, X),
@@ -491,11 +483,11 @@ rotatePix(Pixel, Altura, Pixelresultante) :-
 
     pixrgb(Xnew, X, R, G, B, D, Pixelresultante).
 
-rotatePixs([], Altura, []).
+rotatePixs([], _, []).
 rotatePixs([Primer|Pixeles], Altura, PixelesFinales) :-
     rotatePix(Primer, Altura, Pixel),
     rotatePixs(Pixeles, Altura, Pixeles2),
-    append([Pixel], Pixeles2, PixelesFinales).
+    my_append([Pixel], Pixeles2, PixelesFinales).
 
 rotateHex(Pixel, Altura, Pixelresultante) :-
     x(Pixel, X),
@@ -506,11 +498,11 @@ rotateHex(Pixel, Altura, Pixelresultante) :-
 
     pixhex(Xnew, X, HEX, D, Pixelresultante).
 
-rotateHexs([], Altura, []).
+rotateHexs([], _, []).
 rotateHexs([Primer|Pixeles], Altura, PixelesFinales) :-
     rotateHex(Primer, Altura, Pixel),
     rotateHexs(Pixeles, Altura, Pixeles2),
-    append([Pixel], Pixeles2, PixelesFinales).
+    my_append([Pixel], Pixeles2, PixelesFinales).
 
 rotate90bit(Imagen, I2) :-
     w(Imagen, W),
@@ -550,24 +542,24 @@ list_max(M, [[Primer, Valor1]|Pixeles]):-
 
 list_max2(M, M, []):- !.
 
-list_max2([Primer, Valor1], [Segundo, Valor2], [[Tercer, Valor3]|Pixeles2]):-
+list_max2([Primer, Valor1], [_, Valor2], [[Tercer, Valor3]|Pixeles2]):-
           Valor3 >= Valor2,
           !,
           list_max2([Primer, Valor1], [Tercer, Valor3], Pixeles2).
 
-list_max2([Primer, Valor1], [Segundo, Valor2], [[Tercer, Valor3]|Pixeles2]):-
+list_max2([Primer, Valor1], [Segundo, Valor2], [[_, Valor3]|Pixeles2]):-
           Valor3 =< Valor2,
           list_max2([Primer, Valor1], [Segundo, Valor2], Pixeles2).
 
 
-eliminar_dePixelesBit([], E, []).
-eliminar_dePixelesBit([PrimerPixel|Pixeles], E, L) :-
-    bit(PrimerPixel, BIT),
+eliminar_dePixelesBit([], _, []).
+eliminar_dePixelesBit([Primer|_], E, _) :-
+    bit(Primer, BIT),
     BIT = E,
     !.
 eliminar_dePixelesBit([Primer|Pixeles], E, L) :-
     eliminar_dePixelesBit(Pixeles, E, N),
-    append([Primer], N, L).
+    my_append([Primer], N, L).
 compressBit(Imagen, I2) :-
     w(Imagen, W),
     h(Imagen, H),
@@ -579,14 +571,14 @@ compressBit(Imagen, I2) :-
     eliminar_dePixelesBit(Pixeles, Primer, Resultado),
     image(W, H, Resultado, I2).
 
-eliminar_dePixelesHex([], E, []).
-eliminar_dePixelesHex([PrimerPixel|Pixeles], E, L) :-
-    hex(PrimerPixel, HEX),
+eliminar_dePixelesHex([], _, []).
+eliminar_dePixelesHex([Primer|_], E, _) :-
+    hex(Primer, HEX),
     HEX = E,
     !.
 eliminar_dePixelesHex([Primer|Pixeles], E, L) :-
     eliminar_dePixelesHex(Pixeles, E, N),
-    append([Primer], N, L).
+    my_append([Primer], N, L).
 compressHex(Imagen, I2) :-
     w(Imagen, W),
     h(Imagen, H),
@@ -598,19 +590,22 @@ compressHex(Imagen, I2) :-
     eliminar_dePixelesHex(Pixeles, Primer, Resultado),
     image(W, H, Resultado, I2).
 
-eliminar_dePixelesPix([], E, []).
-eliminar_dePixelesPix([F|Pixeles], E, L) :-
-    r(F, R),
-    g(F, G),
-    b(F, B),
-    p1(E, Red),
-    p2(E, Green),
-    p3(E, Blue);
-    (R = Red, G = Green, B = Blue),
+eliminar_dePixelesPix([], _,_,_, []).
+
+eliminar_dePixelesPix([Primer|_], Rojo, Verde, Azul, _) :-
+    r(Primer, R), 
+    g(Primer, G),
+    b(Primer, B),
+    R = Rojo,
+    G = Verde,
+    B = Azul, 
     !.
-eliminar_dePixelesPix([F|Pixeles], E, L) :-
-    eliminar_dePixelesPix(Pixeles, E, N),
-    append([Primer], N, L).
+
+
+eliminar_dePixelesPix([Primer|Pixeles], Rojo, Verde, Azul, L) :-
+    eliminar_dePixelesPix(Pixeles, Rojo, Verde, Azul, N),
+    my_append([Primer], N, L).
+
 compressPix(Imagen, I2) :-
     w(Imagen, W),
     h(Imagen, H),
@@ -644,7 +639,7 @@ cambiarPixel([Pixel|Pixeles], Elemento, Pixeles2) :-
 
 cambiarPixel([Pixel|Pixeles], Elemento, Pixeles3) :-
     cambiarPixel(Pixeles, Elemento, Pixeles2),
-    append([Pixel], Pixeles2, Pixeles3).
+    my_append([Pixel], Pixeles2, Pixeles3).
 
 imageChangePixel(Imagen, Pixel, I2) :-
     w(Imagen, W),
@@ -665,7 +660,227 @@ imageInvertColorRGB(Pixel, Pixel2) :-
     Bnew = 255 - B,
     pixrgb(X, Y, Rnew, Gnew, Bnew, D, Pixel2).
 
-imageToString(Imagen, String).
-imageDepthLayers(Imagen, ListaImagenes).
+%Falta mejorar el compressPix ya que no borra adecuadamente
+%los pixeles según un elemento, crear un algoritmo que me permita 
+%ordenar los pixeles procurando que sigan el orden
+%de 0,0   1,0   2,0
+%   0,1   1,1   2,1
+%   0,2   1,2   2,2
+%Para poder crear adecuadamente el imageToString y el DepthLayers.
 
-pixbit(0, 0, 1, 0, P1), pixbit(0, 1, 0, 2, P2), image(1, 2, [P1, P2], I), pixeles(I, P), pixbit(0, 0, 1, 5, P3), imageChangePixel(I, P3, I2).
+bubble_sortY(List,Sorted):-
+    b_sortY(List,[],Sorted).
+b_sortY([],Acc,Acc).
+b_sortY([H|T],Acc,Sorted):-
+    bubbleY(H,T,NT,Max),
+    b_sortY(NT,[Max|Acc],Sorted).
+   
+bubbleY(X,[],[],X).
+bubbleY(Pixel1,[Pixel2|T],[Pixel2|NT],Max):-
+    y(Pixel1, Y1),
+    y(Pixel2, Y2),
+    Y1>Y2,
+    bubbleY(Pixel1,T,NT,Max).
+bubbleY(Pixel1,[Pixel2|T],[Pixel1|NT],Max):-
+    y(Pixel1, Y1),
+    y(Pixel2, Y2),
+    Y1=<Y2,
+    bubbleY(Pixel2,T,NT,Max).
+
+ordenarPixelesY(List, Sorted) :-
+    bubble_sortY(List, Sorted).
+
+bubble_sortX(List,Sorted):-
+    b_sortX(List,[],Sorted).
+b_sortX([],Acc,Acc).
+b_sortX([H|T],Acc,Sorted):-
+    bubbleX(H,T,NT,Max),
+    b_sortX(NT,[Max|Acc],Sorted).
+   
+bubbleX(X,[],[],X).
+bubbleX(Pixel1,[Pixel2|T],[Pixel2|NT],Max):-
+    x(Pixel1, X1),
+    x(Pixel2, X2),
+    X1>X2,
+    bubbleX(Pixel1,T,NT,Max).
+bubbleX(Pixel1,[Pixel2|T],[Pixel1|NT],Max):-
+    x(Pixel1, X1),
+    x(Pixel2, X2),
+    X1=<X2,
+    bubbleX(Pixel2,T,NT,Max).
+
+ordenarPixelesX(List, Sorted) :-
+    bubble_sortX(List, Sorted).
+
+separarPixelesCada(Numero,Pixeles,Resultado) :-
+    length(Resultado,_),
+    maplist({Numero}/[X]>>length(X,Numero),Resultado),
+    my_append(Resultado,Pixeles).
+
+filasBit([], "\n").
+filasBit([Pixel|Resto], String) :-
+    bit(Pixel, BIT),
+    number_string(BIT, Bitazo),
+    string_concat(Bitazo, '\t', String1),
+    filasBit(Resto, String2),
+    string_concat(String1, String2, String).
+
+todosBit([], "\n").
+todosBit([Pixel|Resto], String) :-
+    filasBit(Pixel, String1),
+    todosBit(Resto, String2),
+    string_concat(String1, String2, String).
+
+filasHex([], "\n").
+filasHex([Pixel|Resto], String) :-
+    hex(Pixel, HEX),
+    string_concat(HEX, "\t", String1),
+    filasHex(Resto, String2),
+    string_concat(String1, String2, String).
+
+todosHex([], "\n").
+todosHex([Pixel|Resto], String) :-
+    filasHex(Pixel, String1),
+    todosHex(Resto, String2),
+    string_concat(String1, String2, String).
+
+filasRGB([], "\n").
+filasRGB([Pixel|Resto], String) :-
+    r(Pixel, R),
+    g(Pixel, G),
+    b(Pixel, B),
+    number_string(R, Red),
+    number_string(G, Green),
+    number_string(B, Blue),
+    string_concat(Red, "\t", String1),
+    string_concat(Green, "\t", String2),
+    string_concat(Blue, "\t", String3),
+    string_concat(String1, String2, String4),
+    string_concat(String4, String3, String5),
+    filasRGB(Resto, String6),
+    string_concat(String5, String6, String).
+
+todosRGB([], "\n").
+todosRGB([Pixel|Resto], String) :-
+    filasRGB(Pixel, String1),
+    todosRGB(Resto, String2),
+    string_concat(String1, String2, String).
+
+imageToString(Imagen, String) :-
+    w(Imagen, W),
+    pixeles(Imagen, Pixeles),
+    separarPixelesCada(W, Pixeles, PixelesSeparados),
+    ((imageIsBitmap(Imagen),
+    todosBit(PixelesSeparados, String));
+    (imageIsPixmap(Imagen),
+    todosRGB(PixelesSeparados, String));
+    (imageIsHexmap(Imagen),
+    todosHex(PixelesSeparados, String))).
+
+crearImgBit([_|_], [], []).
+crearImgBit([Pixel1|Pixeles1], [Pixel2|Pixeles2], PixelesFinales) :-
+    x(Pixel2, X),
+    y(Pixel2, Y),
+    d(Pixel1, D1),
+    d(Pixel2, D2),
+    D1 \== D2,
+    pixbit(X, Y, 1, D1, P1),
+    crearImgBit([Pixel1|Pixeles1], Pixeles2, PixelesFinales2),
+    my_append([P1], PixelesFinales2, PixelesFinales).
+crearImgBit([Pixel1|Pixeles1], [Pixel2|Pixeles2], PixelesFinales) :-
+    x(Pixel2, X),
+    y(Pixel2, Y),
+    bit(Pixel2, BIT),
+    d(Pixel1, D1),
+    d(Pixel2, D2),
+    D1 = D2,
+    pixbit(X, Y, BIT, D1, P1),
+    crearImgBit([Pixel1|Pixeles1], Pixeles2, PixelesFinales2),
+    my_append([P1], PixelesFinales2, PixelesFinales).
+
+crearListaImgBit([], [_|_], []).
+crearListaImgBit([Pixel1|Pixeles1], [Pixel2|Pixeles2], PixelesFinales) :-
+    crearImgBit([Pixel1|Pixeles1], [Pixel2|Pixeles2], PixelesFinales1),
+    crearListaImgBit(Pixeles1, [Pixel2|Pixeles2], PixelesFinales2),
+    my_append([PixelesFinales1], PixelesFinales2, PixelesFinales3),
+    eliminar_duplicados(PixelesFinales3, PixelesFinales).
+
+crearImgHex([_|_], [], []).
+crearImgHex([Pixel1|Pixeles1], [Pixel2|Pixeles2], PixelesFinales) :-
+    x(Pixel2, X),
+    y(Pixel2, Y),
+    d(Pixel1, D1),
+    d(Pixel2, D2),
+    D1 \== D2,
+    pixhex(X, Y, "FFFFFF", D1, P1),
+    crearImgHex([Pixel1|Pixeles1], Pixeles2, PixelesFinales2),
+    my_append([P1], PixelesFinales2, PixelesFinales).
+crearImgHex([Pixel1|Pixeles1], [Pixel2|Pixeles2], PixelesFinales) :-
+    x(Pixel2, X),
+    y(Pixel2, Y),
+    hex(Pixel2, HEX),
+    d(Pixel1, D1),
+    d(Pixel2, D2),
+    D1 = D2,
+    pixhex(X, Y, HEX, D1, P1),
+    crearImgHex([Pixel1|Pixeles1], Pixeles2, PixelesFinales2),
+    my_append([P1], PixelesFinales2, PixelesFinales).
+
+crearListaImgHex([], [_|_], []).
+crearListaImgHex([Pixel1|Pixeles1], [Pixel2|Pixeles2], PixelesFinales) :-
+    crearImgHex([Pixel1|Pixeles1], [Pixel2|Pixeles2], PixelesFinales1),
+    crearListaImgHex(Pixeles1, [Pixel2|Pixeles2], PixelesFinales2),
+    my_append([PixelesFinales1], PixelesFinales2, PixelesFinales3),
+    eliminar_duplicados(PixelesFinales3, PixelesFinales).
+
+
+crearImgRGB([_|_], [], []).
+crearImgRGB([Pixel1|Pixeles1], [Pixel2|Pixeles2], PixelesFinales) :-
+    x(Pixel2, X),
+    y(Pixel2, Y),
+    d_rgb(Pixel1, D1),
+    d_rgb(Pixel2, D2),
+    D1 \== D2,
+    pixrgb(X, Y, 255, 255, 255, D1, P1),
+    crearImgRGB([Pixel1|Pixeles1], Pixeles2, PixelesFinales2),
+    my_append([P1], PixelesFinales2, PixelesFinales).
+
+crearImgRGB([Pixel1|Pixeles1], [Pixel2|Pixeles2], PixelesFinales) :-
+    x(Pixel2, X),
+    y(Pixel2, Y),
+    r(Pixel2, R),
+    g(Pixel2, G),
+    b(Pixel2, B),
+    d_rgb(Pixel1, D1),
+    d_rgb(Pixel2, D2),
+    D1 = D2,
+    pixrgb(X, Y, R, G, B, D1, P1),
+    crearImgRGB([Pixel1|Pixeles1], Pixeles2, PixelesFinales2),
+    my_append([P1], PixelesFinales2, PixelesFinales).
+
+crearListaImgRGB([], [_|_], []).
+crearListaImgRGB([Pixel1|Pixeles1], [Pixel2|Pixeles2], PixelesFinales) :-
+    crearImgRGB([Pixel1|Pixeles1], [Pixel2|Pixeles2], PixelesFinales1),
+    crearListaImgRGB(Pixeles1, [Pixel2|Pixeles2], PixelesFinales2),
+    my_append([PixelesFinales1], PixelesFinales2, PixelesFinales3),
+    eliminar_duplicados(PixelesFinales3, PixelesFinales).
+
+crearImagenes(_, [], []).
+crearImagenes(Imagen, [Pixeles1|Pixeles2], ListaImagenes) :-
+    w(Imagen, W),
+    h(Imagen, H),
+    image(W, H, Pixeles1, I1),
+    crearImagenes(Imagen, Pixeles2, ListaImagenes2),
+    my_append([I1], ListaImagenes2, ListaImagenes).
+
+imageDepthLayers(Imagen, ListaImagenes) :-
+    pixeles(Imagen, Pixeles),
+    ((imageIsBitmap(Imagen),
+    crearListaImgBit(Pixeles, Pixeles, P),
+    crearImagenes(Imagen, P, ListaImagenes));
+    (imageIsPixmap(Imagen),
+    crearListaImgRGB(Pixeles, Pixeles, P1),
+    crearImagenes(Imagen, P1, ListaImagenes));
+    (imageIsHexmap(Imagen),
+    crearListaImgHex(Pixeles, Pixeles, P2),
+    crearImagenes(Imagen, P2, ListaImagenes))).
