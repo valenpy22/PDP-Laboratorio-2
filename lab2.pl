@@ -1,38 +1,29 @@
-/*
-:- use_module('TDApixbit.pl', [pixbit/5]).
-*/
 
 /*
-DOMINIO
-
-
-
-
-
-PREDICADOS
-p1(Lista, PrimerElemento) (aridad 2)
+Predicados
+p1(Lista, PrimerElemento)  (aridad 2)
 p2(Lista, SegundoElemento) (aridad 2)
-p3(Lista, TercerElemento) (aridad 2)
+p3(Lista, TercerElemento)  (aridad 2)
 my_size(Lista, Largo) (aridad 2)
-my_append(Lista, Lista2, ListaResultante) (aridad 3)
+my_append(Lista, Lista2, ListaResultante)  (aridad 3)
 contarRepetidos(Lista, Elemento, Cantidad) (aridad 3)
 contarRepetidos2(Lista, ListaElementos, ListaResultante) (aridad 3)
 eliminar_duplicados(Lista, ListaResultante) (aridad 2)
 list_max(Elemento, ListaElementos) (aridad 2)
 list_max2(Elemento, Elemento2, ListaElementos) (aridad 3)
-my_maplist(Predicado, Lista, ListaResultante) (aridad 3)
+my_maplist(Predicado, Lista, ListaResultante)  (aridad 3)
 bubble_sortX(Pixeles, PixelesResultantes) (aridad 2)
 b_sortX(Pixeles, Pixeles2, Pixeles3, PixelesOrdenados) (aridad 4)
-bubbleX(Pixel1, Pixeles2, Pixeles3, PixelesOrdenados) (aridad 4)
+bubbleX(Pixel1, Pixeles2, Pixeles3, PixelesOrdenados)  (aridad 4)
 bubble_sortY(Pixeles, PixelesResultantes) (aridad 2)
 b_sortY(Pixeles, Pixeles2, Pixeles3, PixelesOrdenados) (aridad 4)
-bubbleY(Pixel1, Pixeles2, Pixeles3, PixelesOrdenados) (aridad 4)
-rAH2(Rojo, H2) (aridad 2)
-rAH1(Rojo, H1) (aridad 2)
+bubbleY(Pixel1, Pixeles2, Pixeles3, PixelesOrdenados)  (aridad 4)
+rAH2(Rojo, H2)  (aridad 2)
+rAH1(Rojo, H1)  (aridad 2)
 gAH4(Verde, H4) (aridad 2)
 gAH3(Verde, H3) (aridad 2)
-bAH6(Azul, H6) (aridad 2)
-bAH5(Azul, H5) (aridad 2)
+bAH6(Azul, H6)  (aridad 2)
+bAH5(Azul, H5)  (aridad 2)
 bubble_sortP(Imagenes,Imagenes2) (aridad 2)
 b_sortP(Imagenes,Imagenes3,Imagenes2) (aridad 3)
 bubbleP(Imagen1, Imagenes2, Imagenes3, Max) (aridad 4)
@@ -42,7 +33,7 @@ pixrgb(X, Y, R, G, B, D, PIXRGB) (aridad 7)
 pixhex(X, Y, HEX, D, PIXHEX) (aridad 5)
 image(Width, Height, Pixeles, IMAGE) (aridad 4)
 histograma(Colores, Repeticiones, HISTOGRAM) (aridad 3)
-depthLayers(Imagen, Pixeles, ListaImagenes) (aridad 3)
+depthLayers(Imagen, Pixeles, ListaImagenes)  (aridad 3)
 getx(Pixel, X) (aridad 2)
 gety(Pixel, Y) (aridad 2)
 getbit(Pixbit, BIT) (aridad 2)
@@ -50,18 +41,18 @@ getd(Pixel, Profundidad) (aridad 2)
 bits(Pixbits, BITS) (aridad 2)
 extraerX(Pixeles, Xs) (aridad 2)
 extraerY(Pixeles, Ys) (aridad 2)
-getr(Pixrgb, Red) (aridad 2)
+getr(Pixrgb, Red)   (aridad 2)
 getg(Pixrgb, Green) (aridad 2)
-getb(Pixrgb, Blue) (aridad 2)
+getb(Pixrgb, Blue)  (aridad 2)
 getd_rgb(Pixrgb, Profundidad) (aridad 2)
 rgbs(Pixrgbs, Colores) (aridad 2)
 gethex(Pixhex, HEX) (aridad 2)
 hexs(Pixhexs, Colores) (aridad 2)
 getw(Imagen, Ancho) (aridad 2)
-geth(Imagen, Alto) (aridad 2)
+geth(Imagen, Alto)  (aridad 2)
 getpixeles(Imagen, Pixeles) (aridad 2)
-isPixbit(X, Y, BIT, Depth) (aridad 4)
-isPixrgb(X, Y, R, G, B, D) (aridad 6)
+isPixbit(X, Y, BIT, Depth)  (aridad 4)
+isPixrgb(X, Y, R, G, B, D)  (aridad 6)
 numeroAletra(Numero, String) (aridad 2)
 isPixhex(X, Y, HEX, D) (aridad 4)
 imageIsBitmap(Imagen) (aridad 1)
@@ -112,7 +103,7 @@ rotateHexs(Pixhexs, Altura, PixelResultante) (aridad 3)
 eliminar_dePixelesHex(Pixhexs, Color, PixhexsFinales) (aridad 3)
 filasHex(Pixhexs, String) (aridad 2)
 todosHex(Pixhexs, String) (aridad 2)
-cambiarPixhexs(Pixhexs1, Pixhexs2, Pixhexs3) (aridad 3)
+cambiarPixhexs(Pixhexs1, Pixhexs2, Pixhexs3)  (aridad 3)
 crearPixelesHexs(Pixhexs, Pixhexs2, Pixhexs3) (aridad 3)
 imageFlipH(Imagen, I2) (aridad 2)
 imageFlipV(Imagen, I2) (aridad 2)
@@ -122,22 +113,19 @@ imageToHistogram(Image, Histograma) (aridad 2)
 imageRotate90(Imagen, I2) (aridad 2)
 imageCompress(Imagen, I2) (aridad 2)
 imageChangePixel(Imagen, Pixel, I2) (aridad 3)
-imageInvertColorRGB(Pixel, Pixel2) (aridad 2)
+imageInvertColorRGB(Pixel, Pixel2)  (aridad 2)
 imageToString(Image, String) (aridad 2)
 imageDepthLayers(Imagen, ListaImagenes) (aridad 2)
 
-
-METAS PRIMARIAS
-
+Metas primarias
 
 
 
-METAS SECUNDARIAS
 
-
-
-CLAUSULAS
-REGLAS
+Metas secundarias
+Clausulas
+Hechos
+Reglas
 */
 
 
@@ -305,13 +293,20 @@ bAH6(B, H2) :-
 bAH5(B, H1) :-
     H1 is B//16 rem 16.
 
+%Dominio: Dos listas.
+%Descripción: Predicado que permite ordenar una lista de pixeles según su profundidad.
 bubble_sortP(List,Sorted):-
     b_sortP(List,[],Sorted).
+
+%Dominio: Tres listas.
+%Descripción: Predicado que permite ordenar una lista de pixeles según su profundidad.
 b_sortP([],Acc,Acc).
 b_sortP([H|T],Acc,Sorted):-
     bubbleP(H,T,NT,Max),
     b_sortP(NT,[Max|Acc],Sorted).
    
+%Dominio: Imagen, dos listas de imágenes e imagen.
+%Descripción: Predicado que permite comparar los las profundidades de un conjunto de imágenes para determinar el mayor.
 bubbleP(Imagen1,[],[], Imagen1).
 bubbleP(Imagen1, [Imagen2|T], [Imagen2|NT], Max):-
     getpixeles(Imagen1, Pixeles1),
@@ -333,24 +328,82 @@ bubbleP(Imagen1,[Imagen2|T],[Imagen1|NT],Max):-
     D1 =< D2,
     bubbleP(Imagen2,T,NT,Max).
 
+%Dominio: Dos listas de imágenes.
+%Descripción: Predicado que permite ordenar una lista de imágenes según su profundidad.
 ordenarPorProfundidad(ListaImagenes, ListaImagenes2) :-
     bubble_sortP(ListaImagenes, ListaImagenes2).
 
 /*
 CONSTRUCTORES
 */
+
+/*
+Nombre: TDA pixbit
+Dominio:
+Pixbit: Pixbit
+- Coordenada X, Coordenada Y, Bit, Profundidad: Enteros.
+
+Predicados:
+pixbit(X, Y, BIT, D, PIXBIT) (aridad 5)
+getx(Pixel, X) (aridad 2)
+gety(Pixel, Y) (aridad 2)
+getbit(Pixbit, BIT) (aridad 2)
+getd(Pixel, Profundidad) (aridad 2)
+bits(Pixbits, BITS) (aridad 2)
+extraerX(Pixeles, Xs) (aridad 2)
+extraerY(Pixeles, Ys) (aridad 2)
+isPixbit(X, Y, BIT, Depth)  (aridad 4)
+cambiarXbit(Pixbit, Largo, PixelFinal) (aridad 3)
+cambiarXbits(Pixbits, Largo, PixelesFinales) (aridad 3)
+cambiarYbit(Pixbit, Largo, PixelFinal) (aridad 3)
+cambiarYbits(Pixbits, Largo, PixelesFinales) (aridad 3)
+pixelAptoBit(Pixbit, X1, Y1, X2, Y2, PixelFinal) (aridad 6)
+pixelesAptosBit(Pixbits, X1, Y1, X2, Y2, PixelesFinales) (aridad 6)
+rotateBit(Pixbit, Altura, PixelFinal) (aridad 3)
+rotateBits(Pixbits, Altura, PixelesFinales) (aridad 3)
+eliminar_dePixelesBit(Pixbits, Color, PixelesFinales) (aridad 3)
+ordenarPixelesX(Pixeles, PixelesOrdenadosX) (aridad 2)
+ordenarPixelesY(Pixeles, PixelesOrdenadosY) (aridad 2)
+filasBit(Pixbits, String) (aridad 2)
+todosBit(Pixbits, String) (aridad 2)
+separarPixelesCada(Numero, Pixeles, Resultado) (aridad 3)
+cambiarPixbits(Pixbits, Pixbits2, PixbitsFinales) (aridad 3)
+crearPixelesBits(Pixbits, Pixbits2, PixbitsFinales) (aridad 3)
+*/
 %Dominio: Cuatro números y pixbit.
 %Descripción: Predicado que permite construir el TDA pixbit.
 pixbit(X, Y, BIT, D, [X, Y, BIT, D]).
+
+/*
+Nombre: TDA pixrgb
+Dominio:
+Pixrgb: Pixrgb
+- Coordenada X, Coordenada Y, Canal Red, Canal Green, Canal Blue, Profundidad: Enteros.
+*/
 
 %Dominio: Seis números y pixrgb.
 %Descripción: Predicado que permite construir el TDA pixrgb.
 pixrgb(X, Y, R, G, B, D, [X, Y, R, G, B, D]).
 
+/*
+Nombre: TDA pixhex
+Dominio:
+Pixhex: Pixhex
+- Coordenada X, Coordenada Y: Enteros. 
+- HexString: String.
+- Profundidad: Entero.
+*/
 %Dominio: Cuatro números y pixhex.
 %Descripción: Predicado que permite construir el TDA pixhex.
 pixhex(X, Y, HEX, D, [X, Y, HEX, D]).
 
+/*
+Nombre: TDA image
+Dominio: 
+Image: Image
+- Ancho, Alto: Enteros.
+- Pixeles: Lista pixel.
+*/
 %Dominio: Dos números, pixeles e image.
 %Descripción: Predicado que permite construir el TDA image.
 image(W, H, [C|T], [W, H, Pixeles2]) :-
