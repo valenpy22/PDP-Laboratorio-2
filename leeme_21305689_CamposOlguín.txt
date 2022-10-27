@@ -1,0 +1,7 @@
+Estudiante: Valentina Paz Campos Olguín 
+RUT: 21305689-1
+Profesor: Roberto Gonzalez
+
+Este es el segundo laboratorio del ramo Paradigmas de Programación.
+
+En el archivo main_21305689_CamposOlguin.pl se encuentran todos los requerimientos funcionales descritos en el documento.

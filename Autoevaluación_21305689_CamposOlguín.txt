@@ -1,0 +1,33 @@
+
+Requerimientos  Autoevaluación
+no funcionales
+1. Autoevaluación     1
+2. Lenguaje           1
+3. Versión            1
+4. Standard           1
+5. Documentación      1
+6. Organización       1
+7. Historial          1
+8. Script pruebas     1
+9. Prerrequisitos     1
+
+Requerimientos      Autoevaluación
+  funcionales
+1. TDA's                1
+2. Constructor image    1
+3. imageIsBitmap        1
+4. imageIsPixmap        1
+5. imageIsHexmap        1
+6. imageIsCompressed    1
+7. imageFlipH           1
+8. imageFlipV           1
+9. imageCrop            1
+10. imageRGBToHex       1
+11. imageToHistogram    1
+12. imageRotate90       1
+13. imageCompress       1
+14. imageChangePixel    1
+15. imageInvertColorRGB 1
+16. imageToString       1
+17. imageDepthLayers    1
+18. imageDecompress     0
